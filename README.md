@@ -30,7 +30,7 @@ Now that we’ve created a repo it’s time to add some data.
 
 In Pachyderm, you write data to an explicit commit (again, similar to Git). Commits are immutable snapshots of your data which give Pachyderm its version control properties. Files can be added, removed, or updated in a given commit.  
 
-We’ll start by adding just one video file to the repo with a new commit. We’ve provided some small online images used for testing programs from a few sources. NOTE: If you want to use your own videos, make sure they are small or you could be watching frames dumping for hours or days! In other words, don’t download the latest episode of Game of Thrones for this demo or it might take as long to finish as GRR Martin is taking to finish writing the books.
+We’ll start by adding just one video file to the repo with a new commit. We’ve provided some small online videos used for testing programs from a few sources in the videos.txt file. NOTE: If you want to use your own videos, make sure they are small or you could be watching frames dumping for hours or days! In other words, don’t download the latest episode of Game of Thrones for this demo or it might take as long to finish as GRR Martin is taking to finish writing the books.
 
 We’ll use the put file command along with the **-f** flag. The flag can take either a local file, a URL, or a object storage bucket which it’ll automatically scrape. In our case, we’ll pass a URL.
 

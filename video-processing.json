@@ -1,0 +1,15 @@
+{
+  "pipeline": {
+    "name": "videoprocessing"
+  },
+  "input": {
+    "pfs": {
+      "repo": "videos",
+      "glob": "/*"
+    }
+  },
+  "transform": {
+    "cmd": [ "python3", "/video-processing-pach.py" ],
+    "image": "rabbit37/videoprocessing:v23"
+  }
+}

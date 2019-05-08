@@ -200,6 +200,7 @@ It looks like our job was a success. But to make sure you want to make sure the 
 
 ```
 $ pachctl list file videoprocessing@master
+
 COMMIT NAME TYPE COMMITTED SIZE
 799a80fbdb7e4a1db237a6553cbd444c /small_0.jpg file About an hour ago 27.93KiB
 799a80fbdb7e4a1db237a6553cbd444c /small_1.jpg file About an hour ago 28.27KiB

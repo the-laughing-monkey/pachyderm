@@ -169,9 +169,8 @@ We walk through all the videos stored in the repo, which we connect to through t
 
 Now let’s create the pipeline in Pachyderm:
 
-```
-$ pachctl create pipeline -f [https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing.json](https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing.json)
-```
+
+**$ pachctl create pipeline -f [https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing.json](https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing.json)**
 
 ### What Happens When You Create a Pipeline
 

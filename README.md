@@ -54,7 +54,7 @@ NAME CREATED SIZE (MASTER)
 videos About a minute ago 57.27KiB
 ```
 
-The **list** command shows us the repo and that there’s data inside of it.
+The **list** command shows us the repo and that there’s data inside of it because we went from OB to 57.27KiB.
 
 We can also view the commit we just created:
 
@@ -74,7 +74,7 @@ COMMIT NAME TYPE COMMITTED SIZE
 d89758a7496a4c56920b0eaa7d7d3255 /small.mp4 file About a minute ago 57.27KiB
 ```
 
-Finally, we can also view the file we just added. Since this is an video, we can’t just print it out but we can call a program on our mac to view the file easily  
+Finally, we can also view the file we just added. Since this is a video, we can’t just print it out but we can call a program on our mac to view the file easily.  
 
 ```
 # On macOS # If you have VLC installed:

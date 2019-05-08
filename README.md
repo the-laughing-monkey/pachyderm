@@ -83,7 +83,7 @@ $ pachctl get file videos@master:small.mp4 | open -f -a /Applications/VLC.app
   
 ### Create a Pipeline
 
-Now that we’ve got some data in our repo, it’s time to do something with it. Pipelines the way we work with data inside of Pachyderm. In other words, it’s how we do something. We create a pipeline’s key pieces with a JSON encoding. For this example, we’ve already created the pipeline for you and you can find the [code on Github](https://github.com/the-laughing-monkey/pachyderm).
+Now that we’ve got some data in our repo, it’s time to do something with it. Pipelines the way we work with data inside of Pachyderm. In other words, it’s how we do something. We create a pipeline’s key pieces with a JSON encoding. For this example, we’ve already created the pipeline for you and you can find the [code on Github](https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing.json).
 
 When you want to create your own pipelines later, you can refer to the full [Pipeline Specification](https://docs.pachyderm.io/en/latest/reference/pipeline_spec.html) to use more advanced options. Options include building your own code into a container instead of the pre-built Docker image we’ll be using here.
 

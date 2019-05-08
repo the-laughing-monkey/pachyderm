@@ -3,7 +3,7 @@
 
 ### Pachyderm Video Processing Demo
 
-Welcome to the video processing demo of Pachyderm! We’re going to use the power of Pachyderm’s data version control to do some video capture. We’ll use Python 3 and OpenCV to the capture the video frame by frame, dumping those frames to JPGs.  
+Welcome to the video processing demo of Pachyderm! We’re going to use the power of Pachyderm’s data version control and data transformation to do some video capture. To do that, we'll work with Python 3 and OpenCV to capture the video frame by frame, dumping those frames to JPGs.  
 
 If you’re just getting started with Pachyderm, make sure you’ve gone through the [local installation](https://docs.pachyderm.io/en/latest/getting_started/local_installation.html) to get started and at least the [beginner demo](https://docs.pachyderm.io/en/latest/getting_started/beginner_tutorial.html) before moving on to this one.  
 

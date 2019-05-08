@@ -15,12 +15,14 @@ First we create a repo, which is the highest level data primitive in Pachyderm. 
 
 For this demo, we’ll create a repo called **videos** to hold the data we want to process:
 
-$ **pachctl create repo videos**
+```
+$ pachctl create repo videos
 
-$ **pachctl list repo**
+$ pachctl list repo
 
 NAME CREATED SIZE (MASTER)
 videos 7 seconds ago 0B
+```
 
 This shows that we successfully created the videos repo and that the size of repo’s master branch is 0B, since we haven’t added any data to it yet.
 
@@ -40,36 +42,44 @@ We also specify the repo name “**videos**”, the branch name “**master**”
 
 Here’s an example atomic commit of the file small.mp4 to the images repo’s master branch:
 
-$ **pachctl put file videos@master:small.mp4 -f [http://techslides.com/demos/sample-videos/small.mp4](http://techslides.com/demos/sample-videos/small.mp4)**
- 
+$ pachctl put file videos@master:small.mp4 -f [http://techslides.com/demos/sample-videos/small.mp4](http://techslides.com/demos/sample-videos/small.mp4)
+
+
 Let’s check to make sure the data got added into Pachyderm’s videos repo.  
 
-$ **pachctl list repo**
+```
+$ pachctl list repo
 
 NAME CREATED SIZE (MASTER)
 videos About a minute ago 57.27KiB
- 
+```
+
 The **list** command shows us the repo and that there’s data inside of it.
 
 We can also view the commit we just created:
 
-$ **pachctl list commit videos**
+```
+$ pachctl list commit videos
 
 REPO COMMIT PARENT STARTED DURATION SIZE
 videos d89758a7496a4c56920b0eaa7d7d3255 <none> 29 seconds ago Less than a second 57.27KiB
+```
 
 And we can see the actual file in there, the commit ID and the size of the file:
  
-$ **pachctl list file videos@master**
+``` 
+$ pachctl list file videos@master
 
 COMMIT NAME TYPE COMMITTED SIZE
 d89758a7496a4c56920b0eaa7d7d3255 /small.mp4 file About a minute ago 57.27KiB
+```
 
 Finally, we can also view the file we just added. Since this is an video, we can’t just print it out but we can call a program on our mac to view the file easily  
 
-On macOS # If you have VLC installed:
-**$ pachctl get file videos@master:small.mp4 | open -f -a /Applications/VLC.app**
-
+```
+# On macOS # If you have VLC installed:
+$ pachctl get file videos@master:small.mp4 | open -f -a /Applications/VLC.app
+```
   
 ### Create a Pipeline
 
@@ -100,12 +110,11 @@ Below is the pipeline spec and python code we’re using. Let’s walk through t
 ```  
 
 
- 
 Our pipeline spec contains a few simple sections. First is the pipeline name: **videoprocessing**.
 
 Next we specify the input. Here we only have one PFS input, our videos repo with a particular glob pattern that grabs everything in the repo with an *.
 
-Finally we have the transform which specifies the docker image we want to use, rabbit37/videoprocessing:23 (which defaults to using DockerHub as the registry), and we have a small python script that will do the frame capture for us called **video-processing-pach.py**{LINK TO GITHUB}.
+Finally we have the transform which specifies the docker image we want to use, rabbit37/videoprocessing:23 (which defaults to using DockerHub as the registry), and we have a small python script that will do the frame capture for us called [**video-processing-pach.py**](https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing-pach.py).
 
 The code for the video-processing-pach.py is below:
 
@@ -160,7 +169,9 @@ We walk through all the videos stored in the repo, which we connect to through t
 
 Now let’s create the pipeline in Pachyderm:
 
-$ **pachctl create pipeline -f** [**https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing.json**](https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing.json)
+```
+$ pachctl create pipeline -f [https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing.json](https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing.json)
+```
 
 ### What Happens When You Create a Pipeline
 
@@ -170,34 +181,39 @@ The first time Pachyderm runs a pipeline job, it needs to download the Docker im
 
 You can view the job with:
 
-$ **pachctl list job**
+```
+$ pachctl list job
 
 ID PIPELINE STARTED DURATION RESTART PROGRESS DL UL STATE
-
 3de25f1b34e841e786b17f872fd29b52 videoprocessing About an hour ago 4 seconds 0 2 + 0 / 2 1.372MiB 13.89MiB success
+```
 
 You can also see the pipeline working and whether it succeed:
 
-$ **pachctl list pipeline**
+```
+$ pachctl list pipeline
 
 NAME INPUT CREATED STATE / LAST JOB
 videoprocessing videos:/* About an hour ago running / success
-
+```
  
 It looks like our job was a success. But to make sure you want to make sure the the frames were written to the videoprocessing directory:
 
-$ **pachctl list file videoprocessing@master**
+```
+$ pachctl list file videoprocessing@master
 COMMIT NAME TYPE COMMITTED SIZE
 799a80fbdb7e4a1db237a6553cbd444c /small_0.jpg file About an hour ago 27.93KiB
 799a80fbdb7e4a1db237a6553cbd444c /small_1.jpg file About an hour ago 28.27KiB
 799a80fbdb7e4a1db237a6553cbd444c /small_10.jpg file About an hour ago 26.23KiB
 799a80fbdb7e4a1db237a6553cbd444c /small_100.jpg file About an hour ago 29.68KiB
+```
 
 You’ll see a lot more files in your output, depending on how long the video was and how many frames were in the video.  
 
 ### Conclusion
 
 Congratulations! 
+
 You successfully created a repo in Pachyderm, put videos in that repo and used Python and OpenCV to do frame capture on the videos. 
 
 Now you are ready to move on to more advanced tutorials!

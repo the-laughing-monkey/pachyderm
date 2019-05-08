@@ -83,7 +83,9 @@ $ pachctl get file videos@master:small.mp4 | open -f -a /Applications/VLC.app
   
 ### Create a Pipeline
 
-Now that we’ve got some data in our repo, it’s time to do something with it. Pipelines the way we work with data inside of Pachyderm. In other words, it’s how we do something. We create a pipeline’s key pieces with a JSON encoding. For this example, we’ve already created the pipeline for you and you can find the [code on Github](https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing.json).
+Now that we’ve got some data in our repo, it’s time to do something with it. Pipelines are the way we work with data inside of Pachyderm. In other words, it’s how we do something useful with our files. 
+
+We create a pipeline’s key parameters with a JSON encoding. For this example, we’ve already created the pipeline for you and you can find the [code on Github](https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing.json).
 
 When you want to create your own pipelines later, you can refer to the full [Pipeline Specification](https://docs.pachyderm.io/en/latest/reference/pipeline_spec.html) to use more advanced options. Options include building your own code into a container instead of the pre-built Docker image we’ll be using here.
 
@@ -112,9 +114,9 @@ Below is the pipeline spec and python code we’re using. Let’s walk through t
 
 Our pipeline spec contains a few simple sections. First is the pipeline name: **videoprocessing**.
 
-Next we specify the input. Here we only have one PFS input, our videos repo with a particular glob pattern that grabs everything in the repo with an *.
+Next we specify the **input**. Here we only have one PFS input, our videos repo, with a particular glob pattern that grabs everything in the repo with a wildcard.
 
-Finally we have the transform which specifies the docker image we want to use, rabbit37/videoprocessing:23 (which defaults to using DockerHub as the registry), and we have a small python script that will do the frame capture for us called [**video-processing-pach.py**](https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing-pach.py).
+Finally, we have the **transform** section which specifies the docker image we want to use, rabbit37/videoprocessing:23 (which defaults to using DockerHub as the registry), and we have a small python script that will do the frame capture for us called [**video-processing-pach.py**](https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing-pach.py).
 
 The code for the video-processing-pach.py is below:
 
@@ -165,10 +167,9 @@ for dirpath, dirs, files in os.walk(f_path):
   
 We walk through all the videos stored in the repo, which we connect to through the special local directory of **/pfs/videos**, do our frame capture, and write out the frames as jpgs to the special output directory **/pfs/out**.
 
-/pfs/videos and /pfs/out are special local directories that Pachyderm creates in the container automatically. All the input data for a pipeline will be found in /pfs/<input_repo_name> and your code should always write out to /pfs/out. Pachyderm will automatically gather everything you write to /pfs/out and version it as this pipeline’s output.
+**/pfs/videos** and **/pfs/out** are special local directories that Pachyderm creates in the container automatically. All the input data for a pipeline will be found in /pfs/<input_repo_name> and your code should always write out to /pfs/out. Pachyderm will automatically gather everything you write to /pfs/out and version it as this pipeline’s output.
 
 Now let’s create the pipeline in Pachyderm:
-
 
 **$ pachctl create pipeline -f [https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing.json](https://raw.githubusercontent.com/the-laughing-monkey/pachyderm/master/video-processing.json)**
 
@@ -176,7 +177,7 @@ Now let’s create the pipeline in Pachyderm:
 
 Creating a pipeline tells Pachyderm to run your code on the data in your input repo (the HEAD commit) as well as all future commits that occur after the pipeline is created. Our repo already had a commit, so Pachyderm automatically launched a job to process that data.
 
-The first time Pachyderm runs a pipeline job, it needs to download the Docker image (specified in the pipeline spec) from the specified Docker registry (DockerHub in this case). This first run this might take a minute or more because of the image download, depending on your Internet connection. Subsequent runs will be much faster, since Docker will store the container image in your local registry.
+The first time Pachyderm runs a pipeline job, it needs to download the Docker image (specified in the pipeline spec) from the specified Docker registry (DockerHub in this case). This first run might take a minute or more because of the image download, depending on your Internet connection. Subsequent runs will be much faster, since Docker will store the container image in your local registry.
 
 You can view the job with:
 
@@ -187,7 +188,7 @@ ID PIPELINE STARTED DURATION RESTART PROGRESS DL UL STATE
 3de25f1b34e841e786b17f872fd29b52 videoprocessing About an hour ago 4 seconds 0 2 + 0 / 2 1.372MiB 13.89MiB success
 ```
 
-You can also see the pipeline working and whether it succeed:
+You can also see the pipeline working and whether it succeeded:
 
 ```
 $ pachctl list pipeline
@@ -196,7 +197,11 @@ NAME INPUT CREATED STATE / LAST JOB
 videoprocessing videos:/* About an hour ago running / success
 ```
  
-It looks like our job was a success. But to make sure you want to make sure the the frames were written to the videoprocessing directory:
+It looks like our job was a success! Awesome.
+
+But to make sure you want to check that the frames were written to the videoprocessing directory.  In an early test of this demo we found that the Python code worked perfectly locally but failed with the version of OpenCV in the container we were using.  The process succeeded and the code threw no errors to the logs but the frame capture never happened.  So it's always best to verify that the transformation actually happened to make sure the code is doing what you expected!
+
+You can do that by listing the files in the videoprocessing directory to see that there is something there.
 
 ```
 $ pachctl list file videoprocessing@master
